@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./App.css";
 
 function App() {
 	const [names, setNames] = useState("");
 	const [numTeams, setNumTeams] = useState(2);
 	const [teams, setTeams] = useState<string[][]>([]);
+	const teamsRef = useRef<HTMLDivElement>(null);
 
 	const generateTeams = () => {
 		const nameList = names
@@ -22,6 +23,11 @@ function App() {
 		}
 
 		setTeams(newTeams);
+		
+		// Scroll to teams output after a brief delay to ensure render
+		setTimeout(() => {
+			teamsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+		}, 0);
 	};
 
 	return (
@@ -61,7 +67,7 @@ function App() {
 				</button>
 
 				{teams.length > 0 && (
-					<div className="teams-output">
+				<div className="teams-output" ref={teamsRef}>
 						<h2>Generated Teams:</h2>
 						{teams.map((team, i) => (
 							<div key={i} className="team-card">
