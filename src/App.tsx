@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import "./App.css";
+import "./style.css";
 
 function App() {
 	const [names, setNames] = useState("");
@@ -255,23 +255,26 @@ function App() {
 	};
 
 	return (
-		<div className="app">
-			<div className="team-generator">
-				<h1>Random Team Generator</h1>
-				<h3>
+		<div className="app text-lg">
+			<div className="team-generator flex flex-col">
+				<h1 className="text-center text-6xl text-info mb-4">
+					Random Team Generator
+				</h1>
+				<h3 className="text-center text-2xl">
 					Kiss those ads goodbye
 					<span
-						className="secret-trigger"
+						className="secret-trigger text-2xl cursor-pointer"
 						onClick={() => setShowModal(true)}
 					>
 						🤮
 					</span>
 				</h3>
 
-				<div className="control-group">
-					<label htmlFor="names">Enter names (one per line):</label>
+				<div className="mt-16 w-full md:w-lg mx-auto">
+					<p className="mb-2 ">Enter names (one per line):</p>
 					<textarea
 						id="names"
+						className="textarea bg-neutral w-full text-lg"
 						value={names}
 						onChange={(e) => setNames(e.target.value)}
 						placeholder="Names go here..."
@@ -279,10 +282,11 @@ function App() {
 					/>
 				</div>
 
-				<div className="field-row">
-					<label htmlFor="numTeams">Number of teams:</label>
+				<div className="mt-16 w-full md:w-lg mx-auto">
+					<p className="mb-2 ">Number of teams:</p>
 					<select
 						id="numTeams"
+						className="select select-lg bg-neutral w-3xs"
 						value={numTeams}
 						onChange={(e) => setNumTeams(Number(e.target.value))}
 					>
@@ -294,54 +298,59 @@ function App() {
 					</select>
 				</div>
 
-				<button className="generate-button" onClick={generateTeams}>
-					Generate Teams
-				</button>
+				<div className="text-center mt-16 mb-8">
+					<button
+						className="btn btn-primary btn-lg w-xs"
+						onClick={generateTeams}
+					>
+						Generate Teams
+					</button>
+				</div>
 
 				{teams.length > 0 && (
-					<div className="teams-output" ref={teamsRef}>
-						<h2>Generated Teams:</h2>
+					<div
+						className="teams-output w-full md:w-lg mx-auto"
+						ref={teamsRef}
+					>
+						<div className="divider"></div>
+						<h2 className="text-2xl text-secondary mb-6 text-center">
+							Generated Teams
+						</h2>
 						{teams.map((team, i) => (
-							<div key={i} className="team-card">
-								<h3>Team {i + 1}</h3>
-								<ul className="team-list">
+							<div
+								key={i}
+								className="card bg-neutral shadow-xl mb-6"
+							>
+								<div className="card-body">
+									<h3 className="text-xl card-title italic underline decoration-wavy">
+										Team {i + 1}
+									</h3>
 									{team.map((name) => (
-										<li key={name} className="team-member">
+										<p
+											key={name}
+											className="pl-4 text-lg text-accent capitalize"
+										>
 											{name}
-										</li>
+										</p>
 									))}
-								</ul>
+								</div>
 							</div>
 						))}
 					</div>
 				)}
 
 				{showModal && (
-					<div
-						className="secret-modal-backdrop"
-						onClick={() => setShowModal(false)}
-					>
-						<div
-							className="secret-modal"
-							onClick={(e) => e.stopPropagation()}
-						>
-							<div className="secret-modal-header">
-								<h2 className="secret-modal-title">
-									Advanced Secret Options 🤫
-								</h2>
-								<button
-									className="secret-modal-close"
-									onClick={() => setShowModal(false)}
-								>
-									×
-								</button>
-							</div>
-							<div className="control-group">
-								<label htmlFor="sameTeam">
-									Put these people on the same team:
-								</label>
+					<div className="modal modal-open">
+						<div className="modal-box bg-neutral">
+							<h3 className="font-bold text-2xl text-error mb-6">
+								Advanced Secret Options 🤫
+							</h3>
+
+							<div className="my-4 w-full md:w-lg mx-auto">
+								<p className="mb-2 ">Group:</p>
 								<textarea
 									id="sameTeam"
+									className="textarea textarea-bordered"
 									value={sameTeamMembers}
 									onChange={(e) =>
 										setSameTeamMembers(e.target.value)
@@ -350,13 +359,11 @@ function App() {
 									rows={5}
 								/>
 							</div>
-							<div className="control-group">
-								<label htmlFor="excludeGroup">
-									Exclude the first person from anyone listed
-									below:
-								</label>
+							<div className="my-4 w-full md:w-lg mx-auto">
+								<p className="mb-2 ">Separate:</p>
 								<textarea
 									id="excludeGroup"
+									className="textarea textarea-bordered"
 									value={excludeGroup}
 									onChange={(e) =>
 										setExcludeGroup(e.target.value)
@@ -364,6 +371,14 @@ function App() {
 									placeholder="One name per line"
 									rows={5}
 								/>
+							</div>
+							<div className="modal-action text-center">
+								<button
+									className="btn btn-soft btn-error"
+									onClick={() => setShowModal(false)}
+								>
+									Close
+								</button>
 							</div>
 						</div>
 					</div>
